@@ -61,20 +61,3 @@
   padding: 12px;
 }
 
-.EpidemicModalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 10;
-}
-
-.EpidemicModalContents {
-  background-color: #2dba3b;
-  width: 600px;
-  padding: 20px;
-  min-height: 400px;
-  margin: 14vh auto 0 auto;
-}

@@ -4,7 +4,6 @@ import './App.css';
 import CardListView from './CardListView';
 import CardSetView from './CardSetView';
 import ShuffleDiscardButton from './ShuffleDiscardButton';
-import EpidemicModal from './EpidemicModal';
 import EpidemicButton from './EpidemicButton';
 import defaultDeck from './defaultDeck.json';
 
@@ -67,7 +66,6 @@ function App() {
   let [undrawnDeck, setUndrawnDeck] = useState<DeckCount>(defaultDeck);
   let [knownDeck, setKnownDeck] = useState<DeckCount>({});
   let [discard, setDiscard] = useState<Card[]>([]);
-  // let [showEpidemicModal, setShowEpidemicModal] = useState(false);
 
   const handleDestroyFromSet = (oldCount: DeckCount, setOldCount: (arg: DeckCount) => void, city: string) => {
     const newCounts = _.cloneDeep(oldCount);
@@ -111,7 +109,6 @@ function App() {
     setKnownDeck(newKnownDeck);
     setDiscard([]);
   }
-  // const handleEpidemic = () => setShowEpidemicModal(true);
 
   return (
     <div className="App">
@@ -154,8 +151,6 @@ function App() {
           </div>
         </div>
       </div>
-
-      {/* {showEpidemicModal && <EpidemicModal handleBottomDraw={() => {}} onCancel={() => {}} />} */}
     </div>
   );
 }
