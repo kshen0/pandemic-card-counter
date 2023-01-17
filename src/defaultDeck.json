@@ -1,0 +1,70 @@
+{
+  "San Francisco": {
+    "city": "San Francisco",
+    "count": 2
+  },
+  "Los Angeles": {
+    "city": "Los Angeles",
+    "count": 1
+  },
+  "Denver": {
+    "city": "Denver",
+    "count": 2
+  },
+  "Mexico City": {
+    "city": "Mexico City",
+    "count": 1
+  },
+  "Atlanta": {
+    "city": "Atlanta",
+    "count": 1
+  },
+  "Chicago": {
+    "city": "Chicago",
+    "count": 2
+  },
+  "Jacksonville": {
+    "city": "Jacksonville",
+    "count": 3
+  },
+  "Washington": {
+    "city": "Washington",
+    "count": 3
+  },
+  "New York": {
+    "city": "New York",
+    "count": 3
+  },
+  "Sao Paulo": {
+    "city": "Sao Paulo",
+    "count": 3
+  },
+  "Lagos": {
+    "city": "Lagos",
+    "count": 3
+  },
+  "Tripoli": {
+    "city": "Tripoli",
+    "count": 3
+  },
+  "Cairo": {
+    "city": "Cairo",
+    "count": 3
+  },
+  "Istanbul": {
+    "city": "Istanbul",
+    "count": 3
+  },
+  "London": {
+    "city": "London",
+    "count": 3
+  },
+  "Paris": {
+    "city": "Paris",
+    "count": 2
+  },
+  "Frankfurt": {
+    "city": "Frankfurt",
+    "count": 2
+  }
+}

@@ -1,0 +1,80 @@
+
+.App {
+  font-family: Helvetica, sans-serif
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  padding: 0px 20px;
+  background-color: #282c34;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.Body {
+    padding: 0px 20px;
+}
+
+.DeckAndDiscardContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.DeckContainer {
+  flex-grow: 1;
+}
+
+.DiscardContainer {
+  flex-grow: 1;
+}
+
+.CityCount {
+
+  margin: 8px 0;
+}
+
+.CityCountText {
+  display: inline;
+  margin-right: 8px;
+}
+
+.ActionButton {
+  margin-right: 12px;
+  display: inline;
+}
+
+.EpidemicButton {
+  font-size: 36px;
+  color: #000;
+  background-color: #2dba3b;
+  padding: 12px;
+}
+
+.EpidemicModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.EpidemicModalContents {
+  background-color: #2dba3b;
+  width: 600px;
+  padding: 20px;
+  min-height: 400px;
+  margin: 14vh auto 0 auto;
+}
