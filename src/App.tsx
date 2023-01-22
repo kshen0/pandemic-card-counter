@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
+import { useState } from 'react';
 import './App.css';
 import CardSetView from './CardSetView';
-import ShuffleDiscardButton from './ShuffleDiscardButton';
-import EpidemicButton from './EpidemicButton';
 import defaultDeck from './defaultDeck.json';
 
 /*
@@ -25,31 +23,12 @@ export type CountMetadata = {
   count: number;
 };
 
-export type CardList = Card[];
-
-export type Card = {
-  city: string;
-}
-
 type Draw = {
   city: string
   deck: 'known' | 'unknown' | 'discard'
   index: number
   destroy: boolean
 } | 'shuffle'
-
-// function deckToCardList(deck: DeckCount): CardList {
-//   const keys = Object.keys(deck);
-//   const cards: CardList = [];
-//   for (const [city, cardSpec] of Object.entries(deck)) {
-//     const {count} = cardSpec;
-//     for (let i = 0; i < count; i++) {
-//       cards.push({city});
-//     }
-//   }
-
-//   return cards;
-// }
 
 function incrCity(deck: DeckCount, city: string, incr = 1) {
   const newDeck = { ...deck };
@@ -208,7 +187,6 @@ function App() {
             <button className="Shuffle" disabled={Object.keys(discard).length === 0} onClick={handleShuffleDiscard}>
               Shuffle discard
             </button>
-            {/* <EpidemicButton handleEpidemic={handleEpidemic} /> */}
           </div>
         </div>
       </div>

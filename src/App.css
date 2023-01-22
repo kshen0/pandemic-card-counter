@@ -2,6 +2,10 @@
   --left-col-width: 400px;
 }
 
+ul {
+  padding-left: 0;
+}
+
 .App {
   font-family: Helvetica, sans-serif
 }
@@ -44,8 +48,26 @@
 }
 
 .CityCount {
-
+  list-style-type: none;
   margin: 8px 0;
+}
+
+.Yellow {
+  border-left-color: #FECB49;
+}
+
+.Blue {
+  border-left-color: #4891FF;
+}
+
+.Hollow {
+  border-left-color: #777;
+}
+
+.ColorSection {
+  padding-left: 12px;
+  border-left-width: 8px;
+  border-left-style: solid;
 }
 
 .CityCountText {
