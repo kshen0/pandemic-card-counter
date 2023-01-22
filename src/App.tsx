@@ -25,7 +25,7 @@ export type CountMetadata = {
 
 type Draw = {
   city: string
-  deck: 'known' | 'unknown' | 'discard'
+  deck: 'known' | 'discard'
   index: number
   destroy: boolean
 } | 'shuffle'
@@ -45,43 +45,36 @@ function incrCity(deck: DeckCount, city: string, incr = 1) {
 let history: Draw[] = []
 
 function App() {
-  const [undrawnDeck, setUndrawnDeck] = useState<DeckCount>(defaultDeck);
-  const [knownDeck, setKnownDeck] = useState<DeckCount[]>([]);
+  const [knownDeck, setKnownDeck] = useState<DeckCount[]>([defaultDeck]);
   const [discard, setDiscard] = useState<DeckCount>({ 'Hollow Men Gather': { city: 'Hollow Men Gather', count: 4 }});
   const [lastUndo, setLastUndo] = useState<string | null>(null);
 
-  const handleDestroyFromSet = (city: string, deck: 'known' | 'unknown' | 'discard', index = 0) => {
+  const handleDestroyFromSet = (city: string, deck: 'known' | 'discard', index = 0) => {
     history.push({ deck, city, index, destroy: true })
     setLastUndo('destroy');
     if (deck === 'known') {
       const newKnownDeck = [ ...knownDeck ];
       newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
       setKnownDeck(newKnownDeck)
-    } else if (deck === 'discard') {
-      setDiscard(incrCity(discard, city, -1));
     } else {
-      setUndrawnDeck(incrCity(undrawnDeck, city, -1));
+      setDiscard(incrCity(discard, city, -1));
     }
   };
 
-  const handleDraw = (city: string, deck: 'known' | 'unknown') => {
+  const handleDraw = (city: string) => {
     history.push({
-      deck,
+      deck: 'known',
       city,
       index: knownDeck.length - 1,
       destroy: false,
     });
     setLastUndo('draw');
-    if (deck === 'known') {
-      const newKnownDeck = [...knownDeck];
-      const topDeck = incrCity(newKnownDeck.pop()!, city, -1);
-      if (Object.keys(topDeck).length > 0) {
-        newKnownDeck.push(topDeck);
-      }
-      setKnownDeck(newKnownDeck);
-    } else {
-      setUndrawnDeck(incrCity(undrawnDeck, city, -1));
+    const newKnownDeck = [...knownDeck];
+    const topDeck = incrCity(newKnownDeck.pop()!, city, -1);
+    if (Object.keys(topDeck).length > 0) {
+      newKnownDeck.push(topDeck);
     }
+    setKnownDeck(newKnownDeck);
     setDiscard(incrCity(discard, city));
   };
 
@@ -117,10 +110,8 @@ function App() {
       }
       newKnownDeck[index] = incrCity(newKnownDeck[index], city);
       setKnownDeck(newKnownDeck);
-    } else if (deck === 'discard') {
-      setDiscard(incrCity(discard, city));
     } else {
-      setUndrawnDeck(incrCity(undrawnDeck, city));
+      setDiscard(incrCity(discard, city));
     }
     if (!destroy) {
       setDiscard(incrCity(discard, city, -1));
@@ -151,41 +142,24 @@ function App() {
           <div className="DeckContainer">
             <h2>Deck</h2>
 
+            <p className="Instructions">
+                Click / tap to draw
+              </p>
             {<button disabled={!lastUndo} className="ActionButton UndoButton" onClick={handleUndoDraw}>Undo {!!lastUndo && lastUndo}</button>}
-            {
-              knownDeck.length > 0 && <div className="KnownDeckContainer">
-                <h2>Known</h2>
-                <p className="Instructions">
-                  Click / tap to draw
-                </p>
-                {
-                  reversedSections.map((section, i) => {
-                    return <>
-                      <CardSetView
-                        deckCount={section}
-                        handleDraw={(city: string) => handleDraw(city, 'known')}
-                        hideDrawButton={i > 0}
-                        handleDestroy={(city: string) => handleDestroyFromSet(city, 'known', knownDeck.length - i - 1)}
-                      />
-                      {i + 1 < knownDeck.length && <div className="divider" />}
-                    </>
-                  })
-                }
-              </div>
-            }
-            <div className="UndrawnDeckContainer">
-              <h2>Undrawn</h2>
-              {knownDeck.length === 0 &&
-                <p className="Instructions">
-                  Click / tap to draw
-                </p>
+            <div className="KnownDeckContainer">
+              {
+                reversedSections.map((section, i) => {
+                  return <>
+                    <CardSetView
+                      deckCount={section}
+                      handleDraw={(city: string) => handleDraw(city)}
+                      hideDrawButton={i > 0}
+                      handleDestroy={(city: string) => handleDestroyFromSet(city, 'known', knownDeck.length - i - 1)}
+                    />
+                    {i + 1 < knownDeck.length && <div className="divider" />}
+                  </>
+                })
               }
-              <CardSetView
-                deckCount={undrawnDeck}
-                handleDraw={(city: string) => handleDraw(city, 'unknown')}
-                hideDrawButton={knownDeck.length > 0}
-                handleDestroy={(city: string) => handleDestroyFromSet(city, 'unknown')}
-              />
             </div>
           </div>
           <div className="DiscardContainer">
