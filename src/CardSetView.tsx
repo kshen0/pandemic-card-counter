@@ -30,7 +30,8 @@ function CardListView(props: Props) {
   }
 
   const sortedCities: CardSection[] = [];
-  for (const color in citiesByColor) {
+  for (const color of ['Blue', 'Black', 'Yellow', 'Red', 'Hollow']) {
+    if (!citiesByColor[color]) continue;
     sortedCities.push({
       color,
       counts: Object.values(citiesByColor[color]).sort((a, b) => {
@@ -54,21 +55,26 @@ function CardListView(props: Props) {
               if (count === 0) {
                 return null;
               }
+              const canDraw = !!handleDraw && !hideDrawButton
 
-              return (<li key={city} className="CityCount">
-                {!!handleDraw && count > 0 && !hideDrawButton && <>
-                  <button className="ActionButton DrawButton" onClick={() => handleDraw(city)}>
-                    Draw
-                  </button>
-                </>}
-                {!!handleDestroy && count > 0 && <>
-                  {/* TODO: make own component, add user confirmation */ }
-                  <button className="ActionButton DestroyButton" onClick={() => handleDestroy(city)}>
-                    Destroy 1
-                  </button>
-                </>}
-                <p className="CityCountText">{`${city}: ${count}`}</p>
-              </li>);
+              return (
+                <li
+                  key={city}
+                  className={`CityCount ${entries.color} ${canDraw ? 'CanDraw' : ''}`}
+                  onClick={() => canDraw && handleDraw(city)}
+                >
+                  {!!handleDestroy && count > 0 && <>
+                    {/* TODO: make own component, add user confirmation */ }
+                    <button className="ActionButton DestroyButton" onClick={(e) => {
+                      e.stopPropagation();
+                      handleDestroy(city)
+                    }}>
+                      ✂️ 1
+                    </button>
+                  </>}
+                  <p className="CityCountText">{`${city}: ${count}`}</p>
+                </li>
+              );
             })}
           </div>
         )}

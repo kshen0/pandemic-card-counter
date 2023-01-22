@@ -140,34 +140,36 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
+      <header className="AppHeader">
+        <div className="AppHeaderText">
           Pandemic Legacy Season 2 card counter
-        </p>
+        </div>
       </header>
 
       <div className="Body">
         <div className="DeckAndDiscardContainer">
           <div className="DeckContainer">
-            <h1>Deck</h1>
+            <h2>Deck</h2>
 
             {<button disabled={!lastUndo} className="ActionButton UndoButton" onClick={handleUndoDraw}>Undo {!!lastUndo && lastUndo}</button>}
-            <div className="KnownDeckContainer">
-              <h2>Known</h2>
-              {
-                reversedSections.map((section, i) => {
-                  return <>
-                    <CardSetView
-                      deckCount={section} 
-                      handleDraw={(city: string) => handleDraw(city, 'known')}
-                      hideDrawButton={i > 0}
-                      handleDestroy={(city: string) => handleDestroyFromSet(city, 'known', knownDeck.length - i - 1)}
-                    />
-                    {i + 1 < knownDeck.length && <div className="divider" />}
-                  </>
-                })
-              }
-            </div>
+            {
+              knownDeck.length > 0 && <div className="KnownDeckContainer">
+                <h2>Known</h2>
+                {
+                  reversedSections.map((section, i) => {
+                    return <>
+                      <CardSetView
+                        deckCount={section}
+                        handleDraw={(city: string) => handleDraw(city, 'known')}
+                        hideDrawButton={i > 0}
+                        handleDestroy={(city: string) => handleDestroyFromSet(city, 'known', knownDeck.length - i - 1)}
+                      />
+                      {i + 1 < knownDeck.length && <div className="divider" />}
+                    </>
+                  })
+                }
+              </div>
+            }
             <div className="UndrawnDeckContainer">
               <h2>Undrawn</h2>
               <CardSetView
@@ -179,7 +181,7 @@ function App() {
             </div>
           </div>
           <div className="DiscardContainer">
-            <h1>Discard</h1>
+            <h2>Discard</h2>
             <CardSetView
               deckCount={discard}
               handleDestroy={(city: string) => handleDestroyFromSet(city, 'discard')}

@@ -1,5 +1,5 @@
 :root {
-  --left-col-width: 400px;
+  --col-width: 300px;
 }
 
 ul {
@@ -7,49 +7,50 @@ ul {
 }
 
 .App {
-  font-family: Helvetica, sans-serif
+  font-family: Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  padding: 0px 20px;
+.AppHeader {
+  padding: 40px 20px;
   background-color: #282c34;
-  min-height: 10vh;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
   color: white;
+  font-size: 24px;
+  font-weight: bold;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.AppHeaderText {
+  width: min(calc(2 * var(--col-width)), 100%);
 }
 
 .Body {
-    padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
 }
 
 .DeckAndDiscardContainer {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .DeckContainer {
-  min-width: var(--left-col-width);
-  flex-grow: 1;
+  width: var(--col-width);
 }
 
 .DiscardContainer {
-  flex-grow: 1;
+  width: var(--col-width);
 }
 
 .CityCount {
   list-style-type: none;
-  margin: 8px 0;
+  margin: 4px 0;
+  padding: 4px 12px;
+  width: var(--col-width);
 }
 
 .Yellow {
@@ -65,9 +66,17 @@ ul {
 }
 
 .ColorSection {
-  padding-left: 12px;
   border-left-width: 8px;
   border-left-style: solid;
+  margin-bottom: 8px;
+}
+
+.CanDraw {
+  cursor: pointer;
+}
+
+.CanDraw:hover {
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .CityCountText {
@@ -80,15 +89,8 @@ ul {
   display: inline;
 }
 
-.EpidemicButton {
-  font-size: 36px;
-  color: #000;
-  background-color: #2dba3b;
-  padding: 12px;
-}
-
 .divider {
-  width: var(--left-col-width);
+  width: calc(var(--col-width) - 40px);
   height: 1px;
   background-color: #dedede;
 }
