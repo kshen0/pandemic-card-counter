@@ -25,7 +25,7 @@ export type CountMetadata = {
 
 type Draw = {
   city: string
-  deck: 'known' | 'discard'
+  deck: 'deck' | 'discard'
   index: number
   destroy: boolean
 } | 'shuffle'
@@ -49,10 +49,10 @@ function App() {
   const [discard, setDiscard] = useState<DeckCount>({ 'Hollow Men Gather': { city: 'Hollow Men Gather', count: 4 }});
   const [lastUndo, setLastUndo] = useState<string | null>(null);
 
-  const handleDestroyFromSet = (city: string, deck: 'known' | 'discard', index = 0) => {
+  const handleDestroyFromSet = (city: string, deck: 'deck' | 'discard', index = 0) => {
     history.push({ deck, city, index, destroy: true })
     setLastUndo('destroy');
-    if (deck === 'known') {
+    if (deck === 'deck') {
       const newKnownDeck = [ ...knownDeck ];
       newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
       setKnownDeck(newKnownDeck)
@@ -63,7 +63,7 @@ function App() {
 
   const handleDraw = (city: string) => {
     history.push({
-      deck: 'known',
+      deck: 'deck',
       city,
       index: knownDeck.length - 1,
       destroy: false,
@@ -103,7 +103,7 @@ function App() {
 
     const { city, index, deck, destroy } = draw;
 
-    if (deck === 'known') {
+    if (deck === 'deck') {
       const newKnownDeck = [...knownDeck];
       if (index >= knownDeck.length) {
         newKnownDeck.push({})
@@ -154,7 +154,7 @@ function App() {
                       deckCount={section}
                       handleDraw={(city: string) => handleDraw(city)}
                       hideDrawButton={i > 0}
-                      handleDestroy={(city: string) => handleDestroyFromSet(city, 'known', knownDeck.length - i - 1)}
+                      handleDestroy={(city: string) => handleDestroyFromSet(city, 'deck', knownDeck.length - i - 1)}
                     />
                     {i + 1 < knownDeck.length && <div className="divider" />}
                   </>
