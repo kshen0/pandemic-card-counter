@@ -48,9 +48,8 @@ ul {
 
 .CityCount {
   list-style-type: none;
-  margin: 4px 0;
-  padding: 4px 12px;
-  width: var(--col-width);
+  padding: 6px 12px;
+  width: calc(var(--col-width) - 72px);
 }
 
 .Yellow {
