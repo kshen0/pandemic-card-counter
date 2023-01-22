@@ -143,7 +143,7 @@ function App() {
             <h2>Deck</h2>
 
             <p className="Instructions">
-                Click / tap to draw
+                Click / tap on city name to draw
               </p>
             {<button disabled={!lastUndo} className="ActionButton UndoButton" onClick={handleUndoDraw}>Undo {!!lastUndo && lastUndo}</button>}
             <div className="KnownDeckContainer">
