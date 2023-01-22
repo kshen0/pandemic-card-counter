@@ -1,3 +1,6 @@
+:root {
+  --left-col-width: 400px;
+}
 
 .App {
   font-family: Helvetica, sans-serif
@@ -32,6 +35,7 @@
 }
 
 .DeckContainer {
+  min-width: var(--left-col-width);
   flex-grow: 1;
 }
 
@@ -61,3 +65,8 @@
   padding: 12px;
 }
 
+.divider {
+  width: var(--left-col-width);
+  height: 1px;
+  background-color: #dedede;
+}

@@ -1,16 +1,15 @@
 import React from 'react';
-import type {Card, DeckCount, CountMetadata} from './App';
+import type {DeckCount, CountMetadata} from './App';
 
 type Props = {
   deckCount: DeckCount;
   handleDraw?: (city: string) => void;
-  handleUndoDraw?: () => void;
   handleDestroy?: (city: string) => void;
   hideDrawButton?: boolean;
 }
 
 function CardListView(props: Props) {
-  const {deckCount, handleDestroy, handleDraw, handleUndoDraw, hideDrawButton} = props;
+  const {deckCount, handleDestroy, handleDraw, hideDrawButton} = props;
 
   const sortedCities = Object.values(deckCount).sort((a, b) => {
     if (a.city < b.city) {
@@ -23,7 +22,6 @@ function CardListView(props: Props) {
 
   return (
     <div className="CardList">
-      {!!handleUndoDraw && <button className="ActionButton UndoButton" onClick={handleUndoDraw}>Undo draw</button>}
       <ul>
         {sortedCities.map((entry: CountMetadata) => {
           const {city, count} = entry;
