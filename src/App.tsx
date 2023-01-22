@@ -203,11 +203,11 @@ function App() {
             <h1>Discard</h1>
             <CardSetView
               deckCount={discard}
-              hideDrawButton={true}
               handleDestroy={(city: string) => handleDestroyFromSet(city, 'discard')}
             />
-            {/* TODO support user confirmation */}
-            <ShuffleDiscardButton handleShuffleDiscard={handleShuffleDiscard} />
+            <button className="Shuffle" disabled={Object.keys(discard).length === 0} onClick={handleShuffleDiscard}>
+              Shuffle discard
+            </button>
             {/* <EpidemicButton handleEpidemic={handleEpidemic} /> */}
           </div>
         </div>
