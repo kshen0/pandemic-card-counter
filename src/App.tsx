@@ -155,6 +155,9 @@ function App() {
             {
               knownDeck.length > 0 && <div className="KnownDeckContainer">
                 <h2>Known</h2>
+                <p className="Instructions">
+                  Click / tap to draw
+                </p>
                 {
                   reversedSections.map((section, i) => {
                     return <>
@@ -172,6 +175,11 @@ function App() {
             }
             <div className="UndrawnDeckContainer">
               <h2>Undrawn</h2>
+              {knownDeck.length === 0 &&
+                <p className="Instructions">
+                  Click / tap to draw
+                </p>
+              }
               <CardSetView
                 deckCount={undrawnDeck}
                 handleDraw={(city: string) => handleDraw(city, 'unknown')}

@@ -93,3 +93,11 @@ ul {
   height: 1px;
   background-color: #dedede;
 }
+
+.Instructions {
+  margin: -12px 0 20px;
+}
+
+.UndoButton {
+  margin-bottom: 12px;
+}
