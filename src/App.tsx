@@ -61,18 +61,18 @@ function App() {
     }
   };
 
-  const handleDraw = (city: string) => {
+  const handleDraw = (city: string, index: number) => {
     history.push({
       deck: 'deck',
       city,
-      index: knownDeck.length - 1,
+      index,
       destroy: false,
     });
     setLastUndo('draw');
     const newKnownDeck = [...knownDeck];
-    const topDeck = incrCity(newKnownDeck.pop()!, city, -1);
-    if (Object.keys(topDeck).length > 0) {
-      newKnownDeck.push(topDeck);
+    newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
+    if (Object.keys(newKnownDeck[index]).length === 0) {
+      newKnownDeck.splice(index, 1);
     }
     setKnownDeck(newKnownDeck);
     setDiscard(incrCity(discard, city));
@@ -152,8 +152,7 @@ function App() {
                   return <>
                     <CardSetView
                       deckCount={section}
-                      handleDraw={(city: string) => handleDraw(city)}
-                      hideDrawButton={i > 0}
+                      handleDraw={(city: string) => handleDraw(city, knownDeck.length - i - 1)}
                       handleDestroy={(city: string) => handleDestroyFromSet(city, 'deck', knownDeck.length - i - 1)}
                     />
                     {i + 1 < knownDeck.length && <div className="divider" />}

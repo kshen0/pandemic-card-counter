@@ -5,7 +5,6 @@ type Props = {
   deckCount: DeckCount;
   handleDraw?: (city: string) => void;
   handleDestroy?: (city: string) => void;
-  hideDrawButton?: boolean;
 }
 
 type CardColor = 'Blue' | 'Red' | 'Black' | 'Yellow' | 'Hollow'
@@ -18,7 +17,7 @@ for (const city in defaultDeck) {
 }
 
 function CardListView(props: Props) {
-  const {deckCount, handleDestroy, handleDraw, hideDrawButton} = props;
+  const { deckCount, handleDestroy, handleDraw } = props;
 
   const citiesByColor: { [color: string]: DeckCount } = {};
   for (const city in deckCount) {
@@ -55,13 +54,12 @@ function CardListView(props: Props) {
               if (count === 0) {
                 return null;
               }
-              const canDraw = !!handleDraw && !hideDrawButton
 
               return (
                 <li
                   key={city}
-                  className={`CityCount ${entries.color} ${canDraw ? 'CanDraw' : ''}`}
-                  onClick={() => canDraw && handleDraw(city)}
+                  className={`CityCount ${entries.color} ${!!handleDraw ? 'CanDraw' : ''}`}
+                  onClick={() => handleDraw && handleDraw(city)}
                 >
                   {!!handleDestroy && count > 0 && <>
                     {/* TODO: make own component, add user confirmation */ }
