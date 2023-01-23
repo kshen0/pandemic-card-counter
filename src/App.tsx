@@ -134,6 +134,9 @@ function App() {
       <header className="AppHeader">
         <div className="AppHeaderText">
           Pandemic Legacy Season 2 card counter
+          <div className="Instructions">
+            Click / tap on city name to draw
+          </div>
         </div>
       </header>
 
@@ -141,9 +144,6 @@ function App() {
         <div className="DeckAndDiscardContainer">
           <div className="DeckContainer">
             <h2>Deck</h2>
-            <p className="Instructions">
-              Click / tap on city name to draw
-            </p>
             {<button disabled={!lastUndo} className="UndoButton" onClick={handleUndoDraw}>Undo {!!lastUndo && lastUndo}</button>}
             <div className="KnownDeckContainer">
               {
@@ -162,9 +162,6 @@ function App() {
           </div>
           <div className="DiscardContainer">
             <h2>Discard</h2>
-            <p className="Instructions">
-              Discards are unordered
-            </p>
             <button className="ShuffleButton" disabled={Object.keys(discard).length === 0} onClick={handleShuffleDiscard}>
               Shuffle discard
             </button>

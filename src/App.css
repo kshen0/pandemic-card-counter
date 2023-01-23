@@ -95,7 +95,9 @@ ul {
 }
 
 .Instructions {
-  margin: -8px 0 20px;
+  font-size: 16px;
+  margin-top: 8px;
+  font-weight: normal;
 }
 
 .UndoButton, .ShuffleButton {
