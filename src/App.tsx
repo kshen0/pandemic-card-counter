@@ -141,11 +141,10 @@ function App() {
         <div className="DeckAndDiscardContainer">
           <div className="DeckContainer">
             <h2>Deck</h2>
-
             <p className="Instructions">
-                Click / tap on city name to draw
-              </p>
-            {<button disabled={!lastUndo} className="ActionButton UndoButton" onClick={handleUndoDraw}>Undo {!!lastUndo && lastUndo}</button>}
+              Click / tap on city name to draw
+            </p>
+            {<button disabled={!lastUndo} className="UndoButton" onClick={handleUndoDraw}>Undo {!!lastUndo && lastUndo}</button>}
             <div className="KnownDeckContainer">
               {
                 reversedSections.map((section, i) => {
@@ -163,13 +162,16 @@ function App() {
           </div>
           <div className="DiscardContainer">
             <h2>Discard</h2>
+            <p className="Instructions">
+              Discards are unordered
+            </p>
+            <button className="ShuffleButton" disabled={Object.keys(discard).length === 0} onClick={handleShuffleDiscard}>
+              Shuffle discard
+            </button>
             <CardSetView
               deckCount={discard}
               handleDestroy={(city: string) => handleDestroyFromSet(city, 'discard')}
             />
-            <button className="Shuffle" disabled={Object.keys(discard).length === 0} onClick={handleShuffleDiscard}>
-              Shuffle discard
-            </button>
           </div>
         </div>
       </div>

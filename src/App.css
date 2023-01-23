@@ -95,9 +95,9 @@ ul {
 }
 
 .Instructions {
-  margin: -12px 0 20px;
+  margin: -8px 0 20px;
 }
 
-.UndoButton {
+.UndoButton, .ShuffleButton {
   margin-bottom: 12px;
 }
