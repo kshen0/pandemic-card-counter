@@ -71,14 +71,18 @@ function App() {
     setLastUndo('draw');
     const newKnownDeck = [...knownDeck];
     newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
-    if (Object.keys(newKnownDeck[index]).length === 0) {
+    while (index === newKnownDeck.length - 1 && Object.keys(newKnownDeck[index]).length === 0) {
       newKnownDeck.splice(index, 1);
     }
     setKnownDeck(newKnownDeck);
     setDiscard(incrCity(discard, city));
   };
 
-  // handleUndoDraw takes the most recently-drawn card out of the discard and re-adds it to the set passed in the parameter
+  // handleUndoDraw takes the last element of the `history` variable and undoes it. History can
+  // contain one of three things:
+  // - draw: drawing a card from a position in the deck and discarding
+  // - destroy: destroying a card form the deck or discard
+  // - shuffle: shuffling the discard pile to the top of the deck
   const handleUndoDraw = () => {
     const draw = history.pop();
     if (!draw) return;
@@ -148,14 +152,14 @@ function App() {
             <div className="KnownDeckContainer">
               {
                 reversedSections.map((section, i) => {
-                  return <>
+                  return Object.keys(section).length > 0 ? <>
                     <CardSetView
                       deckCount={section}
                       handleDraw={(city: string) => handleDraw(city, knownDeck.length - i - 1)}
                       handleDestroy={(city: string) => handleDestroyFromSet(city, 'deck', knownDeck.length - i - 1)}
                     />
                     {i + 1 < knownDeck.length && <div className="divider" />}
-                  </>
+                  </> : <></>
                 })
               }
             </div>
