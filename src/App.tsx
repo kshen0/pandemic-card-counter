@@ -72,7 +72,7 @@ function App() {
     const newKnownDeck = [...knownDeck];
     newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
     while (index === newKnownDeck.length - 1 && Object.keys(newKnownDeck[index]).length === 0) {
-      newKnownDeck.splice(index, 1);
+      newKnownDeck.pop();
     }
     setKnownDeck(newKnownDeck);
     setDiscard(incrCity(discard, city));
