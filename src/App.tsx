@@ -71,7 +71,7 @@ function App() {
     setLastUndo('draw');
     const newKnownDeck = [...knownDeck];
     newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
-    while (index === newKnownDeck.length - 1 && Object.keys(newKnownDeck[index]).length === 0) {
+    while (index >= newKnownDeck.length - 1 && Object.keys(newKnownDeck[index]).length === 0) {
       newKnownDeck.pop();
     }
     setKnownDeck(newKnownDeck);
@@ -109,7 +109,7 @@ function App() {
 
     if (deck === 'deck') {
       const newKnownDeck = [...knownDeck];
-      if (index >= knownDeck.length) {
+      while (index >= knownDeck.length) {
         newKnownDeck.push({})
       }
       newKnownDeck[index] = incrCity(newKnownDeck[index], city);
