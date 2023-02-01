@@ -1,70 +1,87 @@
 {
   "San Francisco": {
     "city": "San Francisco",
+    "color": "Blue",
     "count": 2
   },
   "Los Angeles": {
     "city": "Los Angeles",
+    "color": "Yellow",
     "count": 1
   },
   "Denver": {
     "city": "Denver",
+    "color": "Blue",
     "count": 2
   },
   "Mexico City": {
     "city": "Mexico City",
+    "color": "Yellow",
     "count": 1
   },
   "Atlanta": {
     "city": "Atlanta",
+    "color": "Blue",
     "count": 1
   },
   "Chicago": {
     "city": "Chicago",
+    "color": "Blue",
     "count": 2
   },
   "Jacksonville": {
     "city": "Jacksonville",
+    "color": "Yellow",
     "count": 3
   },
   "Washington": {
     "city": "Washington",
+    "color": "Blue",
     "count": 3
   },
   "New York": {
     "city": "New York",
+    "color": "Blue",
     "count": 3
   },
   "Sao Paulo": {
     "city": "Sao Paulo",
+    "color": "Yellow",
     "count": 3
   },
   "Lagos": {
     "city": "Lagos",
+    "color": "Yellow",
     "count": 3
   },
   "Tripoli": {
     "city": "Tripoli",
+    "color": "Black",
     "count": 3
   },
   "Cairo": {
     "city": "Cairo",
+    "color": "Black",
     "count": 3
   },
   "Istanbul": {
     "city": "Istanbul",
+    "color": "Black",
     "count": 3
   },
   "London": {
     "city": "London",
+    "color": "Blue",
     "count": 3
   },
   "Paris": {
     "city": "Paris",
+    "color": "Blue",
     "count": 2
   },
   "Frankfurt": {
     "city": "Frankfurt",
+    "color": "Blue",
     "count": 2
   }
 }

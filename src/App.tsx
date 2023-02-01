@@ -1,10 +1,6 @@
-import React, {useState} from 'react';
-import _ from 'lodash';
+import { useState } from 'react';
 import './App.css';
-import CardListView from './CardListView';
 import CardSetView from './CardSetView';
-import ShuffleDiscardButton from './ShuffleDiscardButton';
-import EpidemicButton from './EpidemicButton';
 import defaultDeck from './defaultDeck.json';
 
 /*
@@ -27,153 +23,161 @@ export type CountMetadata = {
   count: number;
 };
 
-export type CardList = Card[];
+type Draw = {
+  city: string
+  deck: 'deck' | 'discard'
+  index: number
+  destroy: boolean
+} | 'shuffle'
 
-export type Card = {
-  city: string;
-}
-
-
-// function deckToCardList(deck: DeckCount): CardList {
-//   const keys = Object.keys(deck);
-//   const cards: CardList = [];
-//   for (const [city, cardSpec] of Object.entries(deck)) {
-//     const {count} = cardSpec;
-//     for (let i = 0; i < count; i++) {
-//       cards.push({city});
-//     }
-//   }
-
-//   return cards;
-// }
-
-
-const cityToCard = (city: string): Card => {
-  return {city};
-}
-
-const knownCardsIsEmpty = (knownDeck: DeckCount): boolean => {
-  const vals = Object.values(knownDeck);
-  for (let v of vals) {
-    if (v.count > 0) {
-      return false;
-    }
+function incrCity(deck: DeckCount, city: string, incr = 1) {
+  const newDeck = { ...deck };
+  if (!(city in newDeck)) {
+    newDeck[city] = { city, count: 0 };
   }
-  return true;
+  newDeck[city].count += incr;
+  if (newDeck[city].count === 0) {
+    delete newDeck[city];
+  }
+  return newDeck;
 }
+
+let history: Draw[] = []
 
 function App() {
-  let [undrawnDeck, setUndrawnDeck] = useState<DeckCount>(defaultDeck);
-  let [knownDeck, setKnownDeck] = useState<DeckCount>({});
-  let [discard, setDiscard] = useState<Card[]>([]);
+  const [knownDeck, setKnownDeck] = useState<DeckCount[]>([defaultDeck]);
+  const [discard, setDiscard] = useState<DeckCount>({ 'Hollow Men Gather': { city: 'Hollow Men Gather', count: 4 }});
+  const [lastUndo, setLastUndo] = useState<string | null>(null);
 
-  const handleDestroyFromSet = (oldCount: DeckCount, setOldCount: (arg: DeckCount) => void, city: string) => {
-    const newCounts = _.cloneDeep(oldCount);
-    newCounts[city].count = oldCount[city].count - 1;
-    setOldCount(newCounts);
+  const handleDestroyFromSet = (city: string, deck: 'deck' | 'discard', index = 0) => {
+    history.push({ deck, city, index, destroy: true })
+    setLastUndo('destroy');
+    if (deck === 'deck') {
+      const newKnownDeck = [ ...knownDeck ];
+      newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
+      setKnownDeck(newKnownDeck)
+    } else {
+      setDiscard(incrCity(discard, city, -1));
+    }
   };
 
-  const handleDraw = (oldCount: DeckCount, setOldCount: (arg: DeckCount) => void, city: string) => {
-    const newCounts = _.cloneDeep(oldCount);
-    newCounts[city].count = oldCount[city].count - 1;
-    const card = cityToCard(city);
-    setOldCount(newCounts);
-    setDiscard(discard.concat([card]));
+  const handleDraw = (city: string, index: number) => {
+    history.push({
+      deck: 'deck',
+      city,
+      index,
+      destroy: false,
+    });
+    setLastUndo('draw');
+    const newKnownDeck = [...knownDeck];
+    newKnownDeck[index] = incrCity(newKnownDeck[index], city, -1);
+    while (index >= newKnownDeck.length - 1 && Object.keys(newKnownDeck[index]).length === 0) {
+      newKnownDeck.pop();
+    }
+    setKnownDeck(newKnownDeck);
+    setDiscard(incrCity(discard, city));
   };
 
-  // handleUndoDraw takes the most recently-drawn card out of the discard and re-adds it to the set passed in the parameter
-  const handleUndoDraw = (oldCount: DeckCount, setOldCount: (arg: DeckCount) => void) => {
-    const newCounts = _.cloneDeep(oldCount);
- 
-    const undoCard = discard[discard.length - 1];
-    const city = undoCard.city;
+  // handleUndoDraw takes the last element of the `history` variable and undoes it. History can
+  // contain one of three things:
+  // - draw: drawing a card from a position in the deck and discarding
+  // - destroy: destroying a card form the deck or discard
+  // - shuffle: shuffling the discard pile to the top of the deck
+  const handleUndoDraw = () => {
+    const draw = history.pop();
+    if (!draw) return;
 
-    newCounts[city].count = oldCount[city].count + 1;
-    const card = cityToCard(city);
-    setOldCount(newCounts);
-    setDiscard(discard.slice(0, discard.length - 1));
+    const prevUndo = history[history.length - 1];
+    if (!prevUndo) {
+      setLastUndo(null);
+    } else if (prevUndo === 'shuffle') {
+      setLastUndo('shuffle');
+    } else if (prevUndo.destroy) {
+      setLastUndo('destroy');
+    } else {
+      setLastUndo('draw');
+    }
+
+    if (draw === 'shuffle') {
+      const newKnownDeck = [...knownDeck];
+      setDiscard(newKnownDeck.pop()!);
+      setKnownDeck(newKnownDeck);
+      return;
+    }
+
+    const { city, index, deck, destroy } = draw;
+
+    if (deck === 'deck') {
+      const newKnownDeck = [...knownDeck];
+      while (index >= knownDeck.length) {
+        newKnownDeck.push({})
+      }
+      newKnownDeck[index] = incrCity(newKnownDeck[index], city);
+      setKnownDeck(newKnownDeck);
+    } else {
+      setDiscard(incrCity(discard, city));
+    }
+    if (!destroy) {
+      setDiscard(incrCity(discard, city, -1));
+    }
   }
 
   // Shuffles the discard pile to the top of the deck, updating counts in the known deck if appropriate
   const handleShuffleDiscard = () => {
-    const newKnownDeck = _.cloneDeep(knownDeck);
-    for (let card of discard) {
-      const {city} = card;
-      if (newKnownDeck.hasOwnProperty(card.city)) {
-        newKnownDeck[city].count = newKnownDeck[city].count + 1;
-      } else {
-        newKnownDeck[city] = {city, count: 1};
-      }
-    }
-
+    const newKnownDeck = [...knownDeck, discard];
     setKnownDeck(newKnownDeck);
-    setDiscard([]);
+    history.push('shuffle');
+    setLastUndo('shuffle');
+    setDiscard({});
   }
+
+  const reversedSections = [...knownDeck].reverse()
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
+      <header className="AppHeader">
+        <div className="AppHeaderText">
           Pandemic Legacy Season 2 card counter
-        </p>
+          <div className="Instructions">
+            Click / tap on city name to draw
+          </div>
+        </div>
       </header>
 
       <div className="Body">
         <div className="DeckAndDiscardContainer">
           <div className="DeckContainer">
-            <h1>Deck</h1>
-            <div className="UndrawnDeckContainer">
-              <h2>Undrawn</h2>
-              <CardSetView
-                deckCount={undrawnDeck}
-                handleDraw={(city: string) => handleDraw(undrawnDeck, setUndrawnDeck, city)}
-                handleUndoDraw={() => handleUndoDraw(undrawnDeck, setUndrawnDeck)}
-                hideDrawButton={!knownCardsIsEmpty(knownDeck)}
-                handleDestroy={(city: string) => handleDestroyFromSet(undrawnDeck, setUndrawnDeck, city)}
-              />
-            </div>
+            <h2>Deck</h2>
+            {<button disabled={!lastUndo} className="UndoButton" onClick={handleUndoDraw}>Undo {!!lastUndo && lastUndo}</button>}
             <div className="KnownDeckContainer">
-              <h2>Known</h2>
-              <CardSetView
-                deckCount={knownDeck} 
-                handleDraw={(city: string) => handleDraw(knownDeck, setKnownDeck, city)}
-                handleUndoDraw={() => handleUndoDraw(knownDeck, setKnownDeck)}
-                handleDestroy={(city: string) => handleDestroyFromSet(knownDeck, setKnownDeck, city)}
-              />
+              {
+                reversedSections.map((section, i) => {
+                  return Object.keys(section).length > 0 ? <>
+                    <CardSetView
+                      deckCount={section}
+                      handleDraw={(city: string) => handleDraw(city, knownDeck.length - i - 1)}
+                      handleDestroy={(city: string) => handleDestroyFromSet(city, 'deck', knownDeck.length - i - 1)}
+                    />
+                    {i + 1 < knownDeck.length && <div className="divider" />}
+                  </> : <></>
+                })
+              }
             </div>
           </div>
           <div className="DiscardContainer">
-            <h1>Discard</h1>
-            <CardListView cards={discard}/>
-            {/* TODO support user confirmation */}
-            <ShuffleDiscardButton handleShuffleDiscard={handleShuffleDiscard} />
-            {/* <EpidemicButton handleEpidemic={handleEpidemic} /> */}
+            <h2>Discard</h2>
+            <button className="ShuffleButton" disabled={Object.keys(discard).length === 0} onClick={handleShuffleDiscard}>
+              Shuffle discard
+            </button>
+            <CardSetView
+              deckCount={discard}
+              handleDestroy={(city: string) => handleDestroyFromSet(city, 'discard')}
+            />
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
 
 export default App;
